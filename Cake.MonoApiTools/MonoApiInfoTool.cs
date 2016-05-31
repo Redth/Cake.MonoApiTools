@@ -7,7 +7,7 @@ namespace Cake.MonoApiTools
 {
     public class MonoApiInfoToolSettings : ToolSettings
     {
-        public string [] SearchPaths { get; set; }
+        public FilePath [] SearchPaths { get; set; }
     }
 
     class MonoApiInfoTool : Tool<MonoApiInfoToolSettings>

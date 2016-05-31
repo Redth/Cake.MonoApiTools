@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+      <id>Cake.MonoApiTools</id>
+      <version>$version$</version>
+      <authors>Redth</authors>
+      <owners>Redth</owners>
+      <title>Cake.MonoApiTools</title>
+      <description>Cake Build addon to provide Aliases for using Mono API Tools (diffs, info, HTML diffs).</description>
+      <summary>Cake Build addon to provide Aliases for using Mono API Tools (diffs, info, HTML diffs).</summary>
+      <licenseUrl>https://raw.githubusercontent.com/Redth/Cake.MonoApiTools/master/LICENSE.md</licenseUrl>
+      <projectUrl>https://github.com/Redth/Cake.MonoApiTools</projectUrl>
+      <iconUrl>https://raw.githubusercontent.com/Redth/Cake.MonoApiTools/master/icon.png</iconUrl>
+      <requireLicenseAcceptance>false</requireLicenseAcceptance>
+      <copyright>Copyright (c) Redth 2015-2016</copyright>
+      <releaseNotes>Initial Release</releaseNotes>
+      <tags>Cake Script Build</tags>
+
+      <dependencies>
+         <dependency id="Cake.Core" version="0.11.0" />
+      </dependencies>
+   </metadata>
+
+   <files>
+      <file src="./Cake.MonoApiTools/bin/Release/Cake.MonoApiTools.dll" target="lib/net45" />
+      <file src="./Cake.MonoApiTools/bin/Release/Cake.MonoApiTools.xml" target="lib/net45" />
+
+      <file src="./Utils/mono-api-diff.exe" target="tools" />
+      <file src="./Utils/mono-api-info.exe" target="tools" />
+      <file src="./Utils/mono-api-html.exe" target="tools" />
+   </files>
+</package>

@@ -1,15 +1,8 @@
-﻿using System;
-using Cake.Core.Annotations;
+﻿using Cake.Core.Annotations;
 using Cake.Core;
 using Cake.Core.IO;
-using System.IO;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Cake.FileHelpers
+namespace Cake.MonoApiTools
 {
     /// <summary>
     /// File helper aliases.

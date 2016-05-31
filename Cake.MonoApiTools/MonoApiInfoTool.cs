@@ -39,7 +39,7 @@ namespace Cake.MonoApiTools
 
             if (settings != null && settings.SearchPaths != null) {
                 foreach (var p in settings.SearchPaths)
-                    builder.Append ("--search-directory=\"{0}\"");
+                    builder.Append ("--search-directory=\"{0}\"", p.MakeAbsolute (environment));
             }
             
             builder.AppendQuoted (assembly.MakeAbsolute (environment).FullPath);
@@ -57,7 +57,7 @@ namespace Cake.MonoApiTools
 
             if (settings != null && settings.SearchPaths != null) {
                 foreach (var p in settings.SearchPaths)
-                    builder.Append ("--search-directory=\"{0}\"");
+                    builder.Append ("--search-directory=\"{0}\"", p.MakeAbsolute (environment));
             }
 
             builder.AppendQuoted (assembly.MakeAbsolute (environment).FullPath);

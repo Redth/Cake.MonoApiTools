@@ -5,14 +5,17 @@ using System.Collections.Generic;
 
 namespace Cake.MonoApiTools
 {
+    /// <summary>
+    /// Tool settings for mono-api-diff
+    /// </summary>
     public class MonoApiDiffToolSettings : ToolSettings
     {
     }
 
     class MonoApiDiffTool : Tool<MonoApiDiffToolSettings>
     {
-        public MonoApiDiffTool (ICakeContext cakeContext, IFileSystem fileSystem, ICakeEnvironment cakeEnvironment, IProcessRunner processRunner, IGlobber globber)
-            : base (fileSystem, cakeEnvironment, processRunner, globber)
+        public MonoApiDiffTool (ICakeContext cakeContext, IFileSystem fileSystem, ICakeEnvironment cakeEnvironment, IProcessRunner processRunner, IToolLocator toolLocator)
+            : base (fileSystem, cakeEnvironment, processRunner, toolLocator)
         {
             environment = cakeEnvironment;
         }

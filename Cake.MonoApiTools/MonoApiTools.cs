@@ -34,7 +34,7 @@ namespace Cake.MonoApiTools
         [CakeMethodAlias]
         public static void MonoApiDiff (this ICakeContext context, FilePath previousApiInfoFile, FilePath newApiInfoFile, FilePath outputFile, MonoApiTools.MonoApiDiffToolSettings settings)
         {
-            var tool = new MonoApiTools.MonoApiDiffTool (context, context.FileSystem, context.Environment, context.ProcessRunner, context.Globber);
+            var tool = new MonoApiTools.MonoApiDiffTool (context, context.FileSystem, context.Environment, context.ProcessRunner, context.Tools);
             tool.ApiInfoDiff (previousApiInfoFile, newApiInfoFile, outputFile, settings);
         }
 
@@ -60,7 +60,7 @@ namespace Cake.MonoApiTools
         [CakeMethodAlias]
         public static void MonoApiInfo (this ICakeContext context, FilePath dotNetAssembly, FilePath outputFile, MonoApiTools.MonoApiInfoToolSettings settings)
         {
-            var tool = new MonoApiTools.MonoApiInfoTool (context, context.FileSystem, context.Environment, context.ProcessRunner, context.Globber);
+            var tool = new MonoApiTools.MonoApiInfoTool (context, context.FileSystem, context.Environment, context.ProcessRunner, context.Tools);
             tool.ApiInfo (dotNetAssembly, outputFile, settings);
         }
 
@@ -86,9 +86,9 @@ namespace Cake.MonoApiTools
         /// <param name="outputFile">The API Diff Html output file.</param>
         /// <param name="settings">The tool settings.</param>
         [CakeMethodAlias]
-        public static void MonoApiHtml (this ICakeContext context, FilePath previousApiInfoFile, FilePath newApiInfoFile, FilePath outputFile, MonoApiTools.MonoApiHtmlToolSettings settings)
+        public static void MonoApiHtml (this ICakeContext context, FilePath previousApiInfoFile, FilePath newApiInfoFile, FilePath outputFile, MonoApiHtmlToolSettings settings)
         {
-            var tool = new MonoApiTools.MonoApiHtmlTool (context, context.FileSystem, context.Environment, context.ProcessRunner, context.Globber);
+            var tool = new MonoApiTools.MonoApiHtmlTool (context, context.FileSystem, context.Environment, context.ProcessRunner, context.Tools);
             tool.ApiHtml (previousApiInfoFile, newApiInfoFile, settings);
         }
     }

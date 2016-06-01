@@ -5,14 +5,17 @@ using System.Collections.Generic;
 
 namespace Cake.MonoApiTools
 {
+    /// <summary>
+    /// Tool settings for mono-api-html
+    /// </summary>
     public class MonoApiHtmlToolSettings : ToolSettings
     {
     }
 
     class MonoApiHtmlTool : Tool<MonoApiHtmlToolSettings>
     {
-        public MonoApiHtmlTool (ICakeContext cakeContext, IFileSystem fileSystem, ICakeEnvironment cakeEnvironment, IProcessRunner processRunner, IGlobber globber)
-            : base (fileSystem, cakeEnvironment, processRunner, globber)
+        public MonoApiHtmlTool (ICakeContext cakeContext, IFileSystem fileSystem, ICakeEnvironment cakeEnvironment, IProcessRunner processRunner, IToolLocator toolLocator)
+            : base (fileSystem, cakeEnvironment, processRunner, toolLocator)
         {
             environment = cakeEnvironment;
         }

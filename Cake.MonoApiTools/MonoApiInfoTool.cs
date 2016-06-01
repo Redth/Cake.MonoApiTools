@@ -5,15 +5,22 @@ using System.Collections.Generic;
 
 namespace Cake.MonoApiTools
 {
+    /// <summary>
+    /// Tool settings for mono-api-info
+    /// </summary>
     public class MonoApiInfoToolSettings : ToolSettings
     {
+        /// <summary>
+        /// Gets or sets the paths to search for referenced assemblies.
+        /// </summary>
+        /// <value>The search paths.</value>
         public FilePath [] SearchPaths { get; set; }
     }
 
     class MonoApiInfoTool : Tool<MonoApiInfoToolSettings>
     {
-        public MonoApiInfoTool (ICakeContext cakeContext, IFileSystem fileSystem, ICakeEnvironment cakeEnvironment, IProcessRunner processRunner, IGlobber globber)
-            : base (fileSystem, cakeEnvironment, processRunner, globber)
+        public MonoApiInfoTool (ICakeContext cakeContext, IFileSystem fileSystem, ICakeEnvironment cakeEnvironment, IProcessRunner processRunner, IToolLocator toolLocator)
+            : base (fileSystem, cakeEnvironment, processRunner, toolLocator)
         {
             environment = cakeEnvironment;
         }

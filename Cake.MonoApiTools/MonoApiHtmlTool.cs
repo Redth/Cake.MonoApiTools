@@ -42,7 +42,7 @@ namespace Cake.MonoApiTools
             builder.AppendQuoted (previousApiInfo.MakeAbsolute (environment).FullPath);
             builder.AppendQuoted (newApiInfo.MakeAbsolute (environment).FullPath);
 
-            var process = RunProcess (settings, builder);
+            var process = RunProcess (settings ?? new MonoApiHtmlToolSettings (), builder);
 
             process.WaitForExit ();
 
@@ -57,7 +57,7 @@ namespace Cake.MonoApiTools
             builder.AppendQuoted (previousApiInfo.MakeAbsolute (environment).FullPath);
             builder.AppendQuoted (newApiInfo.MakeAbsolute (environment).FullPath);
 
-            var process = RunProcess (settings, builder);
+            var process = RunProcess (settings ?? new MonoApiHtmlToolSettings (), builder);
 
             process.WaitForExit ();
 

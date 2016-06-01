@@ -51,7 +51,9 @@ namespace Cake.MonoApiTools
             
             builder.AppendQuoted (assembly.MakeAbsolute (environment).FullPath);
 
-            var process = RunProcess (settings ?? new MonoApiInfoToolSettings (), builder);
+            var process = RunProcess (settings ?? new MonoApiInfoToolSettings (), 
+                                      builder, 
+                                      new ProcessSettings { RedirectStandardOutput = true });
 
             process.WaitForExit ();
 
@@ -69,7 +71,9 @@ namespace Cake.MonoApiTools
 
             builder.AppendQuoted (assembly.MakeAbsolute (environment).FullPath);
 
-            var process = RunProcess (settings ?? new MonoApiInfoToolSettings (), builder);
+            var process = RunProcess (settings ?? new MonoApiInfoToolSettings (), 
+                                      builder,
+                                      new ProcessSettings { RedirectStandardOutput = true });
 
             process.WaitForExit ();
 

@@ -88,8 +88,8 @@ namespace Cake.MonoApiTools
         [CakeMethodAlias]
         public static void MonoApiHtml (this ICakeContext context, FilePath previousApiInfoFile, FilePath newApiInfoFile, FilePath outputFile, MonoApiHtmlToolSettings settings)
         {
-            var tool = new MonoApiTools.MonoApiHtmlTool (context, context.FileSystem, context.Environment, context.ProcessRunner, context.Tools);
-            tool.ApiHtml (previousApiInfoFile, newApiInfoFile, settings);
+            var tool = new MonoApiHtmlTool (context, context.FileSystem, context.Environment, context.ProcessRunner, context.Tools);
+            tool.ApiHtml (previousApiInfoFile, newApiInfoFile, outputFile, settings);
         }
     }
 }

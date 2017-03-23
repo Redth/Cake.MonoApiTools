@@ -26,7 +26,7 @@ namespace Cake.FileHelpers.Tests
             d.Create ();
         }
 
-        [Test]
+        //[Test]
         public void HtmlDiff ()
         {
             var path = context.CakeContext.Globber.GetFiles ("../../../**/mono-api-html.exe").FirstOrDefault ();

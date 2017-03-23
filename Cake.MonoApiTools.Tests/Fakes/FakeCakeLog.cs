@@ -6,7 +6,7 @@ namespace Cake.Xamarin.Tests.Fakes
     /// <summary>
     /// Implementation of a <see cref="ICakeLog"/> that saves all messages written to it.
     /// </summary>
-    public sealed class FakeLog : ICakeLog
+    public sealed class FakeCakeLog : ICakeLog
     {
         private readonly List<string> _messages;
 
@@ -20,9 +20,9 @@ namespace Cake.Xamarin.Tests.Fakes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FakeLog"/> class.
+        /// Initializes a new instance of the <see cref="FakeCakeLog"/> class.
         /// </summary>
-        public FakeLog()
+        public FakeCakeLog()
         {
             _messages = new List<string>();
         }
@@ -34,6 +34,7 @@ namespace Cake.Xamarin.Tests.Fakes
         public Verbosity Verbosity
         {
             get { return Verbosity.Diagnostic; }
+			set { }
         }
 
         /// <summary>

@@ -19,15 +19,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\Utils\mono-api-diff.exe">
+    <Content Include="..\..\Utils\mono-api-diff.exe">
         <Pack>true</Pack>
         <PackagePath>tools\</PackagePath>
     </Content>
-    <Content Include="..\Utils\mono-api-html.exe">
+    <Content Include="..\..\Utils\mono-api-html.exe">
         <Pack>true</Pack>
         <PackagePath>tools\</PackagePath>
     </Content>
-    <Content Include="..\Utils\mono-api-info.exe">
+    <Content Include="..\..\Utils\mono-api-info.exe">
         <Pack>true</Pack>
         <PackagePath>tools\</PackagePath>
     </Content>

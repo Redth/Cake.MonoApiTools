@@ -24,6 +24,12 @@ namespace Cake.FileHelpers.Tests
             d.Create ();
         }
 
+        [Fact]
+        public void Dummy()
+        {
+            
+        }
+
         //[Test]
         public void HtmlDiff ()
         {

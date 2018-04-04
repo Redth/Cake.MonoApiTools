@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 using System;
 using Cake.Xamarin.Tests.Fakes;
 using Cake.Core.IO;
@@ -7,13 +7,11 @@ using System.Linq;
 
 namespace Cake.FileHelpers.Tests
 {
-    [TestFixture]
-    public class FileHelperTests
+    public class FileHelperTests : IDisposable
     {
         FakeCakeContext context;
 
-        [SetUp]
-        public void Setup ()
+        public FileHelperTests ()
         {
             context = new FakeCakeContext ();
 
@@ -39,8 +37,7 @@ namespace Cake.FileHelpers.Tests
             });
         }
 
-        [TearDown]
-        public void Teardown ()
+        public void Dispose ()
         {
             context.DumpLogs ();
         }

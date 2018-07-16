@@ -3,7 +3,7 @@
 var target = Argument("target", "Default");
 
 var oldPackage = "https://www.nuget.org/api/v2/package/Cake.MonoApiTools/2.0.0";
-var newPackage = "https://ci.appveyor.com/api/buildjobs/fifd953vgy0ufw98/artifacts/output%2FCake.MonoApiTools.1.0.0-preview14.nupkg";
+var newPackage = "https://ci.appveyor.com/api/buildjobs/sbcenp5kuxgn4joi/artifacts/output%2FCake.MonoApiTools.2.0.0-preview1.nupkg";
 
 Task("Default")
     .Does (() =>

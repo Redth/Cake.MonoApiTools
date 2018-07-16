@@ -1,41 +1,28 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>Cake.MonoApiTools</PackageId>
     <Title>Cake.MonoApiTools</Title>
-    <Summary>Cake Build addon to provide Aliases for using Mono API Tools (diffs, info, HTML diffs).</Summary>
-    <Description>Cake Build addon to provide Aliases for using Mono API Tools (diffs, info, HTML diffs).</Description>
-    <PackageTags>Cake Script Build Mono</PackageTags>
-    <Authors>Redth</Authors>
-    <Owners>Redth</Owners>
+    <Description>Cake Build addin to provide aliases for using the Mono API Tools (API info, XML diff, HTML diff and Markdown diff).</Description>
+    <PackageTags>Cake, Script, Build, Mono, API, mono-api-info, mono-api-diff, mono-api-html</PackageTags>
+    <Authors>Jonathan Dick (redth), Matthew Leibowitz (mattleibow)</Authors>
     <PackageProjectUrl>https://github.com/Redth/Cake.MonoApiTools</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/Redth/Cake.MonoApiTools/master/icon.png</PackageIconUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/Redth/Cake.MonoApiTools/master/LICENSE.md</PackageLicenseUrl>
+    <PackageIconUrl>https://cdn.rawgit.com/cake-contrib/graphics/a5cf0f881c390650144b2243ae551d5b9f836196/png/cake-contrib-medium.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/Redth/Cake.MonoApiTools/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\..\Utils\mono-api-diff.exe">
-        <Pack>true</Pack>
-        <PackagePath>tools\</PackagePath>
-    </Content>
-    <Content Include="..\..\Utils\mono-api-html.exe">
-        <Pack>true</Pack>
-        <PackagePath>tools\</PackagePath>
-    </Content>
-    <Content Include="..\..\Utils\mono-api-info.exe">
-        <Pack>true</Pack>
-        <PackagePath>tools\</PackagePath>
-    </Content>
+    <None Include="..\..\externals\tools\**\*" PackagePath="tools" Pack="true" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cake.Core" Version="0.26.1" />
-    <PackageReference Include="Cake.Common" Version="0.26.1" />
+    <PackageReference Include="Cake.Core" Version="0.29.0" />
+    <PackageReference Include="Cake.Common" Version="0.29.0" />
   </ItemGroup>
- 
+
 </Project>

@@ -1,77 +1,107 @@
-﻿using Cake.Core.Tooling;
-using Cake.Core.IO;
-using Cake.Core;
+﻿using System;
 using System.Collections.Generic;
+using Cake.Core;
+using Cake.Core.IO;
+using Cake.Core.Tooling;
 
 namespace Cake.MonoApiTools
 {
-    /// <summary>
-    /// Tool settings for mono-api-html
-    /// </summary>
-    public class MonoApiHtmlToolSettings : ToolSettings
+    public sealed class MonoApiHtmlTool : Tool<MonoApiHtmlToolSettings>
     {
-    }
+        private ICakeEnvironment environment;
 
-    class MonoApiHtmlTool : Tool<MonoApiHtmlToolSettings>
-    {
-        public MonoApiHtmlTool (ICakeContext cakeContext, IFileSystem fileSystem, ICakeEnvironment cakeEnvironment, IProcessRunner processRunner, IToolLocator toolLocator)
-            : base (fileSystem, cakeEnvironment, processRunner, toolLocator)
+        public MonoApiHtmlTool(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner, IToolLocator tools)
+            : base(fileSystem, environment, processRunner, tools)
         {
-            environment = cakeEnvironment;
+            this.environment = environment;
         }
 
-        ICakeEnvironment environment;
+        protected override IEnumerable<string> GetToolExecutableNames()
+        {
+            return new[] { "mono-api-html.exe" };
+        }
 
-        protected override string GetToolName ()
+        protected override string GetToolName()
         {
             return "mono-api-html";
         }
 
-        protected override IEnumerable<string> GetToolExecutableNames ()
+        public void Execute(FilePath firstInfo, FilePath secondInfo, FilePath outputPath, MonoApiHtmlToolSettings settings)
         {
-            return new List<string> {
-                "mono-api-html.exe"
-            };
+            if (firstInfo == null)
+                throw new ArgumentNullException(nameof(firstInfo));
+            if (secondInfo == null)
+                throw new ArgumentNullException(nameof(secondInfo));
+            if (outputPath == null)
+                throw new ArgumentNullException(nameof(outputPath));
+
+            settings = settings ?? new MonoApiHtmlToolSettings();
+
+            Run(settings, GetArguments(firstInfo, secondInfo, outputPath, settings));
         }
 
-        // Now let's make a purty html file
-        // eg: mono mono-api-html.exe -c -x ./gps.previous.info.xml ./gps.current.info.xml > gps.diff.html    
-        public IEnumerable<string> ApiHtml (FilePath previousApiInfo, FilePath newApiInfo, MonoApiHtmlToolSettings settings = null)
+        private ProcessArgumentBuilder GetArguments(FilePath firstInfo, FilePath secondInfo, FilePath outputPath, MonoApiHtmlToolSettings settings)
         {
-            //Arguments = "-c -x ./output/GooglePlayServices.api-info.previous.xml ./output/GooglePlayServices.api-info.xml",
-            var builder = new ProcessArgumentBuilder ();
-            builder.Append ("-c");
-            builder.Append ("-x");
-            builder.AppendQuoted (previousApiInfo.MakeAbsolute (environment).FullPath);
-            builder.AppendQuoted (newApiInfo.MakeAbsolute (environment).FullPath);
+            var builder = new ProcessArgumentBuilder();
 
-            var process = RunProcess (settings ?? new MonoApiHtmlToolSettings (), 
-                                      builder,
-                                      new ProcessSettings { RedirectStandardOutput = true });
+            AddIgnores("--ignore", settings.Ignore);
 
-            process.WaitForExit ();
+            AddIgnores("--ignore-added", settings.IgnoreAdded);
 
-            return process.GetStandardOutput ();
-        }
+            AddIgnores("--ignore-removed", settings.IgnoreRemoved);
 
-        public void ApiHtml (FilePath previousApiInfo, FilePath newApiInfo, FilePath outputFile, MonoApiHtmlToolSettings settings = null)
-        {
-            var builder = new ProcessArgumentBuilder ();
-            builder.Append ("-c");
-            builder.Append ("-x");
-            builder.AppendQuoted (previousApiInfo.MakeAbsolute (environment).FullPath);
-            builder.AppendQuoted (newApiInfo.MakeAbsolute (environment).FullPath);
+            AddIgnores("--ignore-new", settings.IgnoreNew);
 
-            var process = RunProcess (settings ?? new MonoApiHtmlToolSettings (), 
-                                      builder,
-                                      new ProcessSettings { RedirectStandardOutput = true });
+            if (settings.IgnoreChangedParameterNames)
+                builder.Append("--ignore-changes-parameter-names");
 
-            process.WaitForExit ();
+            if (settings.IgnoreChangedPropertySetters)
+                builder.Append("--ignore-changes-property-setters");
 
-            System.IO.File.WriteAllLines (
-                    outputFile.MakeAbsolute (environment).FullPath,
-                    process.GetStandardOutput ());
+            if (settings.IgnoreChangedVirtual)
+                builder.Append("--ignore-changes-virtual");
+
+            if (settings.IgnoreNonBreaking)
+                builder.Append("--ignore-nonbreaking");
+
+            if (settings.IgnoreDuplicateXml)
+                builder.Append("--lax");
+
+            if (settings.Colorize)
+                builder.AppendSwitch("--colorize", "=", "true");
+
+            if (settings.Verbose)
+                builder.Append("--verbose");
+
+            switch (settings.OutputFormat)
+            {
+                case MonoApiHtmlOutputFormat.Markdown:
+                    builder.Append("--markdown");
+                    break;
+                case MonoApiHtmlOutputFormat.Html:
+                default:
+                    // the default is HTML
+                    break;
+            }
+
+            builder.AppendSwitchQuoted("--diff", "=", outputPath.MakeAbsolute(environment).FullPath);
+
+            builder.AppendQuoted(firstInfo.MakeAbsolute(environment).FullPath);
+
+            builder.AppendQuoted(secondInfo.MakeAbsolute(environment).FullPath);
+
+            return builder;
+
+            void AddIgnores(string name, string[] ignores)
+            {
+                if (ignores?.Length > 0)
+                {
+                    foreach (var ignore in ignores)
+                    {
+                        builder.AppendSwitchQuoted(name, "=", ignore);
+                    }
+                }
+            }
         }
     }
 }
-

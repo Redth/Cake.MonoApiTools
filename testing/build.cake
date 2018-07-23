@@ -1,9 +1,9 @@
-#addin nuget:https://ci.appveyor.com/nuget/cake-monoapitools-ilf7s9bl0p9d/?package=Cake.MonoApiTools&version=1.0.0-preview14
+#addin nuget:https://ci.appveyor.com/nuget/cake-monoapitools-gunq9ba46ljl/?package=Cake.MonoApiTools&version=2.0.0-preview3
 
 var target = Argument("target", "Default");
 
 var oldPackage = "https://www.nuget.org/api/v2/package/Cake.MonoApiTools/2.0.0";
-var newPackage = "https://ci.appveyor.com/api/buildjobs/sbcenp5kuxgn4joi/artifacts/output%2FCake.MonoApiTools.2.0.0-preview1.nupkg";
+var newPackage = "https://ci.appveyor.com/api/buildjobs/clm833kv77h5r409/artifacts/output%2FCake.MonoApiTools.2.0.0-preview3.nupkg";
 
 Task("Default")
     .Does (() =>

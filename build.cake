@@ -1,6 +1,6 @@
 #addin "Cake.FileHelpers"
 
-#tool xunit.runner.console&version=2.4.0-rc.2.build4045
+#tool xunit.runner.console&version=2.4.0
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -20,8 +20,7 @@ var fileVersion     = $"{version.Major}.{version.Minor}.{version.Build}.0";
 var infoVersion     = $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
 var packageVersion  = $"{version.Major}.{version.Minor}.{version.Build}";
 
-// TODO: waiting on this package to be merged and released
-var nugetUrl = "https://jenkins.mono-project.com/job/Components-OpenSource-PR/35/Azure/processDownloadRequest/ArtifactsFor-35/a27ca016cfba97352e948ceaf48badccf96cbc9f/XPlat/Mono.ApiTools/output/Mono.ApiTools.5.12.0.273-preview.nupkg";
+var nugetUrl = "https://www.nuget.org/api/v2/package/Mono.ApiTools/5.14.0";
 
 //////////////////////////////////////////////////////////////////////
 // TASKS

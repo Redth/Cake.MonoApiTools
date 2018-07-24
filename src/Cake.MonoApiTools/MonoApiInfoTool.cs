@@ -1,86 +1,83 @@
-﻿using Cake.Core.Tooling;
-using Cake.Core.IO;
-using Cake.Core;
+﻿using System;
 using System.Collections.Generic;
+using Cake.Core;
+using Cake.Core.IO;
+using Cake.Core.Tooling;
 
 namespace Cake.MonoApiTools
 {
-    /// <summary>
-    /// Tool settings for mono-api-info
-    /// </summary>
-    public class MonoApiInfoToolSettings : ToolSettings
+    public sealed class MonoApiInfoTool : Tool<MonoApiInfoToolSettings>
     {
-        /// <summary>
-        /// Gets or sets the paths to search for referenced assemblies.
-        /// </summary>
-        /// <value>The search paths.</value>
-        public FilePath [] SearchPaths { get; set; }
-    }
+        private ICakeEnvironment environment;
 
-    class MonoApiInfoTool : Tool<MonoApiInfoToolSettings>
-    {
-        public MonoApiInfoTool (ICakeContext cakeContext, IFileSystem fileSystem, ICakeEnvironment cakeEnvironment, IProcessRunner processRunner, IToolLocator toolLocator)
-            : base (fileSystem, cakeEnvironment, processRunner, toolLocator)
+        public MonoApiInfoTool(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner, IToolLocator tools)
+            : base(fileSystem, environment, processRunner, tools)
         {
-            environment = cakeEnvironment;
+            this.environment = environment;
         }
 
-        ICakeEnvironment environment;
+        protected override IEnumerable<string> GetToolExecutableNames()
+        {
+            return new[] { "mono-api-info.exe" };
+        }
 
-        protected override string GetToolName ()
+        protected override string GetToolName()
         {
             return "mono-api-info";
         }
 
-        protected override IEnumerable<string> GetToolExecutableNames ()
+        public void Execute(FilePath[] assemblies, FilePath outputPath, MonoApiInfoToolSettings settings)
         {
-            return new List<string> {
-                "mono-api-info.exe"
-            };
+            if (assemblies == null)
+                throw new ArgumentNullException(nameof(assemblies));
+            if (assemblies.Length == 0)
+                throw new ArgumentException("At least one assembly must be provided.", nameof(assemblies));
+            if (outputPath == null)
+                throw new ArgumentNullException(nameof(outputPath));
+
+            settings = settings ?? new MonoApiInfoToolSettings();
+
+            Run(settings, GetArguments(assemblies, outputPath, settings));
         }
 
-        //eg: mono mono-api-info.exe --search-directory=/Library/Frameworks/Xamarin.Android.framework/Libraries/mandroid/platforms/android-23 ./Xamarin.GooglePlayServices.r27.dll > gps.r27.xml
-        public IEnumerable<string> ApiInfo (FilePath assembly, MonoApiInfoToolSettings settings = null)
+        private ProcessArgumentBuilder GetArguments(FilePath[] assemblies, FilePath outputPath, MonoApiInfoToolSettings settings)
         {
-            var builder = new ProcessArgumentBuilder ();
+            var builder = new ProcessArgumentBuilder();
 
-            if (settings != null && settings.SearchPaths != null) {
-                foreach (var p in settings.SearchPaths)
-                    builder.Append ("--search-directory=\"{0}\"", p.MakeAbsolute (environment));
-            }
-            
-            builder.AppendQuoted (assembly.MakeAbsolute (environment).FullPath);
+            if (settings.GenerateAbi)
+                builder.Append("--abi");
 
-            var process = RunProcess (settings ?? new MonoApiInfoToolSettings (), 
-                                      builder, 
-                                      new ProcessSettings { RedirectStandardOutput = true });
+            if (settings.FollowForwarders)
+                builder.Append("--follow-forwarders");
 
-            process.WaitForExit ();
-
-            return process.GetStandardOutput ();
-        }
-
-        public void ApiInfo (FilePath assembly, FilePath outputFile, MonoApiInfoToolSettings settings = null)
-        {
-            var builder = new ProcessArgumentBuilder ();
-
-            if (settings != null && settings.SearchPaths != null) {
-                foreach (var p in settings.SearchPaths)
-                    builder.Append ("--search-directory=\"{0}\"", p.MakeAbsolute (environment));
+            if (settings.SearchPaths?.Length > 0)
+            {
+                foreach (var path in settings.SearchPaths)
+                {
+                    builder.AppendSwitchQuoted("--search-directory", "=", path.MakeAbsolute(environment).FullPath);
+                }
             }
 
-            builder.AppendQuoted (assembly.MakeAbsolute (environment).FullPath);
+            if (settings.ResolvePaths?.Length > 0)
+            {
+                foreach (var path in settings.ResolvePaths)
+                {
+                    builder.AppendSwitchQuoted("-r", "=", path.MakeAbsolute(environment).FullPath);
+                }
+            }
 
-            var process = RunProcess (settings ?? new MonoApiInfoToolSettings (), 
-                                      builder,
-                                      new ProcessSettings { RedirectStandardOutput = true });
+            if (outputPath != null)
+                builder.AppendSwitchQuoted("-o", "=", outputPath.MakeAbsolute(environment).FullPath);
 
-            process.WaitForExit ();
+            if (settings.GenerateContractApi)
+                builder.Append("--contract-api");
 
-            System.IO.File.WriteAllLines (
-                    outputFile.MakeAbsolute (environment).FullPath,
-                    process.GetStandardOutput ());
+            foreach (var assembly in assemblies)
+            {
+                builder.AppendQuoted(assembly.MakeAbsolute(environment).FullPath);
+            }
+
+            return builder;
         }
     }
 }
-

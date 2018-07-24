@@ -1,74 +1,56 @@
-﻿using Cake.Core.Tooling;
-using Cake.Core.IO;
-using Cake.Core;
+﻿using System;
 using System.Collections.Generic;
+using Cake.Core;
+using Cake.Core.IO;
+using Cake.Core.Tooling;
 
 namespace Cake.MonoApiTools
 {
-    /// <summary>
-    /// Tool settings for mono-api-diff
-    /// </summary>
-    public class MonoApiDiffToolSettings : ToolSettings
+    public sealed class MonoApiDiffTool : Tool<MonoApiDiffToolSettings>
     {
-    }
+        private ICakeEnvironment environment;
 
-    class MonoApiDiffTool : Tool<MonoApiDiffToolSettings>
-    {
-        public MonoApiDiffTool (ICakeContext cakeContext, IFileSystem fileSystem, ICakeEnvironment cakeEnvironment, IProcessRunner processRunner, IToolLocator toolLocator)
-            : base (fileSystem, cakeEnvironment, processRunner, toolLocator)
+        public MonoApiDiffTool(IFileSystem fileSystem, ICakeEnvironment environment, IProcessRunner processRunner, IToolLocator tools)
+            : base(fileSystem, environment, processRunner, tools)
         {
-            environment = cakeEnvironment;
+            this.environment = environment;
         }
 
-        ICakeEnvironment environment;
+        protected override IEnumerable<string> GetToolExecutableNames()
+        {
+            return new[] { "mono-api-diff.exe" };
+        }
 
-        protected override string GetToolName ()
+        protected override string GetToolName()
         {
             return "mono-api-diff";
         }
 
-        protected override IEnumerable<string> GetToolExecutableNames ()
+        public void Execute(FilePath firstInfo, FilePath secondInfo, FilePath outputPath, MonoApiDiffToolSettings settings)
         {
-            return new List<string> {
-                "mono-api-diff.exe"
-            };
+            if (firstInfo == null)
+                throw new ArgumentNullException(nameof(firstInfo));
+            if (secondInfo == null)
+                throw new ArgumentNullException(nameof(secondInfo));
+            if (outputPath == null)
+                throw new ArgumentNullException(nameof(outputPath));
+
+            settings = settings ?? new MonoApiDiffToolSettings();
+
+            Run(settings, GetArguments(firstInfo, secondInfo, outputPath, settings));
         }
 
-        // Now diff against current release'd api info
-        // eg: mono mono-api-diff.exe ./gps.r26.xml ./gps.r27.xml > gps.diff.xml    
-        public IEnumerable<string> ApiInfoDiff (FilePath previousApiInfo, FilePath newApiInfo, MonoApiDiffToolSettings settings = null)
+        private ProcessArgumentBuilder GetArguments(FilePath firstInfo, FilePath secondInfo, FilePath outputPath, MonoApiDiffToolSettings settings)
         {
-            var builder = new ProcessArgumentBuilder ();
-            //android list sdk --all 
-            builder.AppendQuoted (previousApiInfo.MakeAbsolute (environment).FullPath);
-            builder.AppendQuoted (newApiInfo.MakeAbsolute (environment).FullPath);
+            var builder = new ProcessArgumentBuilder();
 
-            var process = RunProcess (settings ?? new MonoApiDiffToolSettings (),
-                                      builder,
-                                      new ProcessSettings { RedirectStandardOutput = true });
+            builder.AppendSwitchQuoted("--output", "=", outputPath.MakeAbsolute(environment).FullPath);
 
-            process.WaitForExit ();
+            builder.AppendQuoted(firstInfo.MakeAbsolute(environment).FullPath);
 
-            return process.GetStandardOutput ();
-        }
+            builder.AppendQuoted(secondInfo.MakeAbsolute(environment).FullPath);
 
-        public void ApiInfoDiff (FilePath previousApiInfo, FilePath newApiInfo, FilePath outputFile, MonoApiDiffToolSettings settings = null)
-        {
-            var builder = new ProcessArgumentBuilder ();
-            //android list sdk --all 
-            builder.AppendQuoted (previousApiInfo.MakeAbsolute (environment).FullPath);
-            builder.AppendQuoted (newApiInfo.MakeAbsolute (environment).FullPath);
-
-            var process = RunProcess (settings ?? new MonoApiDiffToolSettings (),
-                                      builder,
-                                      new ProcessSettings { RedirectStandardOutput = true });
-
-            process.WaitForExit ();
-
-            System.IO.File.WriteAllLines (
-                    outputFile.MakeAbsolute (environment).FullPath,
-                    process.GetStandardOutput ());
+            return builder;
         }
     }
 }
-

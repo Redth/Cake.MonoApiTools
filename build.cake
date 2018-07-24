@@ -102,7 +102,7 @@ Task("Package")
         .WithProperty("PackageOutputPath", MakeAbsolute((DirectoryPath)"./output/").FullPath);
     MSBuild (proj, settings);
 
-    settings.WithProperty("PackageVersion", packageVersion + "-preview" + previewNumber);
+    //settings.WithProperty("PackageVersion", packageVersion + "-preview" + previewNumber);
     MSBuild (proj, settings);
 
     Information("Pack complete.");

@@ -8,11 +8,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\appveyor.yml = ..\appveyor.yml
 		..\build.cake = ..\build.cake
 		..\build.sh = ..\build.sh
-		..\LICENSE.md = ..\LICENSE.md
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cake.MonoApiTools", "Cake.MonoApiTools\Cake.MonoApiTools.csproj", "{B06F9D18-B527-480E-BA34-DD10644E2832}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cake.MonoApiTools", "Cake.MonoApiTools\Cake.MonoApiTools.csproj", "{B06F9D18-B527-480E-BA34-DD10644E2832}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cake.MonoApiTools.Tests", "Cake.MonoApiTools.Tests\Cake.MonoApiTools.Tests.csproj", "{9DC10E93-A002-40BB-8044-D38C9E7568DF}"
 EndProject
